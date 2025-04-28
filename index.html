@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BuildCo – Expert construction & civil engineering services for residential, commercial, and industrial projects.">
+    <meta name="google-site-verification" content="o5MVjSeffRfFcQVPtK-ZGDQUMxyQ7bHQkSanmauIrF8">
+    <title>BuildCo | Building Construction & Civil Engineering</title>
+
+    <link rel="icon" href="https://placehold.co/32x32/1A3A5B/ffffff?text=BC" type="image/x-icon">
+
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Extend Tailwind CSS theme with custom colors
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-blue': '#1A3A5B', // Dark Blue
+                        'accent-orange': '#FF7F00', // Vibrant Orange
+                        'dark-grey-text': '#333', // Darker text for readability
+                         'medium-grey-text': '#4b5563', /* Tailwind gray-600 */
+                         'light-grey-text': '#6b7280', /* Tailwind gray-500 */
+                         'light-grey-bg': '#f9fafb', /* Tailwind gray-50 */
+                         'medium-grey-bg': '#f3f4f6', /* Tailwind gray-100 */
+                         'border-grey': '#e5e7eb', /* Tailwind gray-200 */
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Roboto', 'serif'], /* Using Roboto for headings as a serif alternative */
+                    },
+                },
+            },
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Apply fonts and base text color */
+        body {
+            font-family: theme('fontFamily.sans');
+            line-height: 1.6; /* Improved readability */
+            color: theme('colors.dark-grey-text');
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: theme('fontFamily.serif'); /* Use Roboto for headings */
+            color: theme('colors.primary-blue'); /* Dark blue headings */
+        }
+        /* Custom styles for smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        /* Custom scroll bar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-thumb { background-color: rgba(26, 58, 91, 0.6); /* Primary blue with opacity */ border-radius: 4px; }
+
+        /* Style for placeholder images */
+        .placeholder-image {
+            background-color: theme('colors.border-grey');
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: theme('colors.medium-grey-text');
+            font-weight: bold;
+            text-align: center;
+        }
+        /* Hide sections by default, JavaScript will control visibility */
+        .page-section:not(.active) {
+            display: none;
+            opacity: 0; /* Start hidden for fade-in */
+        }
+         .page-section.active {
+             display: block;
+             opacity: 1; /* Fade in when active */
+             transition: opacity 0.5s ease-in-out; /* Fade-in transition */
+         }
+
+         /* Style for carousel images */
+        .carousel-image {
+            width: 100%;
+            height: 100vh; /* Full viewport height */
+            object-fit: cover; /* Cover the area without distortion */
+            display: none; /* Hide by default, JS will show one at a time */
+             opacity: 0; /* Start hidden for fade */
+             transition: opacity 0.5s ease-in-out; /* Fade transition for images */
+        }
+        .carousel-image.active {
+            display: block; /* Show the active image */
+            opacity: 1;
+        }
+
+
+         /* Carousel indicators */
+        .carousel-indicator {
+            width: 10px;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            margin: 0 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .carousel-indicator.active {
+            background-color: rgba(255, 255, 255, 1);
+        }
+
+        /* Style for testimonial cards */
+        .testimonial-card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        /* Style for the message box */
+        #message-box {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: theme('colors.accent-orange'); /* Orange background */
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none; /* Hidden by default */
+        }
+
+        /* Style for homepage tabs */
+        .tab-button {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border-bottom: 2px solid transparent;
+            font-weight: 500;
+        }
+        .tab-button.active {
+            border-bottom-color: theme('colors.primary-blue'); /* Dark blue border */
+            color: theme('colors.primary-blue');
+        }
+        .tab-content:not(.active) {
+            display: none;
+        }
+
+        /* Staggered layout for services and projects */
+        .staggered-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 4rem; /* Space between items */
+            background-color: #ffffff; /* White background for items */
+            border-radius: 0.5rem; /* Rounded corners */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            overflow: hidden; /* Hide overflow for rounded corners */
+        }
+
+        .staggered-item .staggered-content {
+            flex: 1;
+            padding: 1.5rem;
+        }
+
+        .staggered-item .staggered-image {
+            flex: 1;
+            width: 100%;
+            margin-bottom: 1.5rem; /* Space between image and text on mobile */
+        }
+
+        /* Staggered layout on medium screens and up */
+        @media (min-width: 768px) {
+            .staggered-item {
+                flex-direction: row; /* Arrange side-by-side */
+                 margin-bottom: 6rem; /* More space on larger screens */
+                 align-items: stretch; /* Stretch items to fill height */
+            }
+             .staggered-item:nth-child(odd) {
+                flex-direction: row-reverse; /* Reverse order for odd items */
+            }
+             .staggered-item .staggered-image {
+                margin-bottom: 0; /* Remove bottom margin on desktop */
+                width: 50%; /* Give image half width */
+                 height: auto; /* Auto height */
+            }
+             .staggered-item .staggered-content {
+                 width: 50%; /* Give content half width */
+                 padding: 2rem; /* Adjust padding for side-by-side */
+                 display: flex; /* Use flex to vertically center content */
+                 flex-direction: column;
+                 justify-content: center;
+             }
+        }
+
+         /* Style for FAQ accordion (optional) */
+        .faq-item {
+            border-bottom: 1px solid theme('colors.border-grey');
+            padding: 1rem 0;
+        }
+        .faq-question {
+            font-weight: 600;
+            color: theme('colors.primary-blue'); /* Dark blue question text */
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-answer {
+            color: theme('colors.medium-grey-text');
+            margin-top: 0.5rem;
+            display: none; /* Hidden by default */
+        }
+         .faq-question svg {
+             transition: transform 0.3s ease;
+         }
+         .faq-question.active svg {
+             transform: rotate(180deg);
+         }
+
+
+    </style>
+</head>
+<body class="bg-light-grey-bg text-dark-grey-text font-sans leading-relaxed">
+
+<header class="bg-white shadow-md sticky top-0 z-50">
+  <div class="container mx-auto flex items-center justify-between p-4">
+        <a href="#" data-section="home" class="site-nav text-2xl font-bold text-primary-blue hover:text-accent-orange transition duration-300">
+        <img src="https://placehold.co/150x50/1A3A5B/ffffff?text=BuildCo+Logo" alt="BuildCo Logo" class="h-10">
+    </a>
+        <nav id="nav-desktop" class="hidden md:flex space-x-6">
+      <a href="#" data-section="home" class="site-nav text-dark-grey-text hover:text-primary-blue transition duration-300">Home</a>
+      <a href="#" data-section="services" class="site-nav text-dark-grey-text hover:text-primary-blue transition duration-300">Services</a>
+      <a href="#" data-section="projects" class="site-nav text-dark-grey-text hover:text-primary-blue transition duration-300">Projects</a>
+      <a href="#" data-section="testimonials" class="site-nav text-dark-grey-text hover:text-primary-blue transition duration-300">Testimonials</a>
+      <a href="#" data-section="blogs" class="site-nav text-dark-grey-text hover:text-primary-blue transition duration-300">Blog</a>
+      <a href="#" data-section="faqs" class="site-nav text-dark-grey-text hover:text-primary-blue transition duration-300">FAQs</a>
+      <a href="#" data-section="contact" class="site-nav text-dark-grey-text hover:text-primary-blue transition duration-300">Contact</a>
+    </nav>
+        <button id="mobile-menu-button" class="md:hidden focus:outline-none text-dark-grey-text hover:text-primary-blue">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+  </div>
+    <nav id="mobile-menu" class="bg-white md:hidden hidden shadow-lg">
+    <a href="#" data-section="home" class="site-nav block px-4 py-2 text-dark-grey-text hover:bg-medium-grey-bg transition duration-300">Home</a>
+    <a href="#" data-section="services" class="site-nav block px-4 py-2 text-dark-grey-text hover:bg-medium-grey-bg transition duration-300">Services</a>
+    <a href="#" data-section="projects" class="site-nav block px-4 py-2 text-dark-grey-text hover:bg-medium-grey-bg transition duration-300">Projects</a>
+    <a href="#" data-section="testimonials" class="site-nav block px-4 py-2 text-dark-grey-text hover:bg-medium-grey-bg transition duration-300">Testimonials</a>
+    <a href="#" data-section="blogs" class="site-nav block px-4 py-2 text-dark-grey-text hover:bg-medium-grey-bg transition duration-300">Blog</a>
+    <a href="#" data-section="faqs" class="site-nav block px-4 py-2 text-dark-grey-text hover:bg-medium-grey-bg transition duration-300">FAQs</a>
+    <a href="#" data-section="contact" class="site-nav block px-4 py-2 text-dark-grey-text hover:bg-medium-grey-bg transition duration-300">Contact</a>
+  </nav>
+</header>
+
+<section class="w-full">
+    <img src="https://placehold.co/1920x200/FF7F00/1A3A5B?text=BuildCo+Quality+%26+Reliability" alt="BuildCo Quality Banner" class="w-full object-cover h-32 md:h-48" loading="lazy">
+</section>
+
+
+<section id="home" class="page-section active">
+
+    <div class="relative h-screen overflow-hidden">
+        <div id="carousel" class="relative w-full h-full">
+            <img src="https://placehold.co/1920x1080/1f2937/d1d5db?text=Construction+Image+1" alt="Construction Image 1" class="carousel-image active">
+            <img src="https://placehold.co/1920x1080/374151/d1d5db?text=Construction+Image+2" alt="Construction Image 2" class="carousel-image">
+            <img src="https://placehold.co/1920x1080/4b5563/d1d5db?text=Construction+Image+3" alt="Construction Image 3" class="carousel-image">
+
+            <button id="prev-btn" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition duration-300 z-20">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+            </button>
+            <button id="next-btn" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition duration-300 z-20">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </button>
+
+            <div id="carousel-indicators" class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
+                </div>
+        </div>
+
+        <div class="absolute inset-0 bg-primary-blue opacity-50 z-10"></div> <div class="absolute inset-0 flex items-center justify-center text-white text-center z-20 px-4">
+            <div class="max-w-2xl">
+                <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-4">Building Your Future, Brick by Brick</h1>
+                <p class="text-lg md:text-xl mb-8">Expert construction services for residential, commercial, and industrial projects.</p>
+                <a href="#" data-section="contact" class="site-nav bg-accent-orange hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 inline-block">Get a Free Quote</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white py-16">
+        <div class="container mx-auto px-6">
+             <h2 class="text-3xl md:text-4xl font-bold text-center text-primary-blue mb-8">Learn More About Us & Our Services</h2>
+            <div class="flex justify-center border-b border-border-grey mb-8">
+                <button class="tab-button active" data-tab="about-summary">About Us</button>
+                <button class="tab-button" data-tab="services-summary">Our Services</button>
+            </div>
+
+            <div id="about-summary-content" class="tab-content active">
+                <div class="flex flex-col md:flex-row items-center md:space-x-12">
+                    <div class="md:w-1/2 mb-8 md:mb-0">
+                         <img src="https://placehold.co/600x400/d1d5db/4b5563?text=About+Summary+Image" alt="About Us Summary" class="rounded-lg shadow-lg w-full h-auto" loading="lazy">
+                    </div>
+                    <div class="md:w-1/2">
+                        <h3 class="text-2xl font-semibold text-primary-blue mb-4">Your Trusted Construction Partner</h3>
+                        <p class="mb-4 text-medium-grey-text">BuildCo has been serving clients with dedication and expertise for over 20 years. Our commitment to quality, safety, and customer satisfaction sets us apart. We tackle projects of all sizes with professionalism and precision, ensuring outstanding results every time.</p>
+                        <p class="mb-4 text-medium-grey-text">Our experienced team is our greatest asset, bringing a wealth of knowledge and a passion for building to every site. We pride ourselves on our transparent communication and collaborative approach.</p>
+                        <a href="#" data-section="about" class="site-nav text-primary-blue hover:underline font-semibold transition duration-300 inline-block mt-4">Read Our Full Story →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="services-summary-content" class="tab-content">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-medium-grey-bg rounded-lg shadow-md p-6">
+                        <h4 class="text-xl font-semibold text-primary-blue mb-2">Core Engineering</h4>
+                        <p class="text-medium-grey-text">Providing essential engineering expertise for complex projects.</p>
+                    </div>
+                     <div class="bg-medium-grey-bg rounded-lg shadow-md p-6">
+                        <h4 class="text-xl font-semibold text-primary-blue mb-2">Building Services</h4>
+                        <p class="text-medium-grey-text">Specialized construction for various building types.</p>
+                    </div>
+                     <div class="bg-medium-grey-bg rounded-lg shadow-md p-6">
+                        <h4 class="text-xl font-semibold text-primary-blue mb-2">Renovations & Restorations</h4>
+                        <p class="text-medium-grey-text">Breathing new life into existing structures with expert care.</p>
+                    </div>
+                </div>
+                 <div class="text-center mt-8">
+                     <a href="#" data-section="services" class="site-nav bg-primary-blue hover:bg-accent-orange text-white font-bold py-3 px-8 rounded-full transition duration-300 inline-block">View All Services</a>
+                 </div>
+            </div>
+        </div>
+    </div>
+
+     <div class="bg-primary-blue text-white py-16 text-center">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Ready to Start Your Project?</h2>
+            <p class="text-lg mb-8">Contact us today for a free consultation and quote.</p>
+             <a href="#" data-section="contact" class="site-nav bg-accent-orange hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 inline-block">Get Started</a>
+        </div>
+    </div>
+
+</section>
+
+<section id="about" class="page-section py-16 bg-white">
+    <div class="container mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-primary-blue mb-12">Our Company Story</h2>
+        <div class="flex flex-col md:flex-row items-center md:space-x-12">
+            <div class="md:w-1/2 mb-8 md:mb-0">
+                <img src="https://placehold.co/600x400/d1d5db/4b5563?text=About+Us+Full+Image" alt="About Us" class="rounded-lg shadow-lg w-full h-auto" loading="lazy">
+            </div>
+            <div class="md:w-1/2">
+                <h3 class="text-2xl font-semibold text-primary-blue mb-4">Building on a Foundation of Trust</h3>
+                <p class="mb-4 text-medium-grey-text">BuildCo began its journey in [Year Founded] with a vision to provide exceptional construction services built on integrity and quality. From humble beginnings, we have grown into a respected leader in the industry, known for our commitment to excellence and client satisfaction.</p>
+                <p class="mb-4 text-medium-grey-text">Our mission is to deliver superior construction solutions that not only meet but exceed our clients' expectations. We achieve this by combining expert craftsmanship, innovative techniques, and a steadfast dedication to safety and efficiency on every project, big or small.</p>
+                <p class="mb-4 text-medium-grey-text">Meet Our Team: [Placeholder for team photos/bios if needed in a real site]</p>
+                <a href="#" data-section="contact" class="site-nav text-primary-blue hover:underline font-semibold transition duration-300 inline-block mt-4">Partner With Us →</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="services" class="page-section py-16 bg-medium-grey-bg">
+    <div class="container mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-primary-blue mb-12">Our Comprehensive Services</h2>
+
+        <div class="staggered-item mb-8">
+             <div class="staggered-image md:w-1/2">
+                <img src="https://placehold.co/600x400/d1d5db/4b5563?text=Core+Engineering" alt="Core Engineering Services" class="w-full h-full object-cover" loading="lazy">
+            </div>
+            <div class="staggered-content md:w-1/2 p-6">
+                <h3 class="text-2xl font-semibold text-primary-blue mb-4">Core Engineering Services</h3>
+                <p class="text-medium-grey-text mb-4">Our expert engineering team provides the foundational strength for every project. We offer comprehensive services from initial site assessment and structural analysis to detailed design and planning, ensuring the integrity and feasibility of your construction.</p>
+                <ul class="list-disc list-inside text-medium-grey-text">
+                    <li>Structural Engineering</li>
+                    <li>Civil Engineering</li>
+                    <li>Geotechnical Analysis</li>
+                    <li>Feasibility Studies</li>
+                    <li>Design and Planning</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="staggered-item mb-8">
+             <div class="staggered-image md:w-1/2">
+                <img src="https://placehold.co/600x400/d1d5db/4b5563?text=Building+Services" alt="Specific Building Services" class="w-full h-full object-cover" loading="lazy">
+            </div>
+            <div class="staggered-content md:w-1/2 p-6">
+                <h3 class="text-2xl font-semibold text-primary-blue mb-4">Specific Building Services</h3>
+                <p class="text-medium-grey-text mb-4">We specialize in constructing a variety of building types, tailored to meet specific client needs. Whether it's a modern commercial complex, a functional industrial facility, or a comfortable residential property, our team has the expertise to deliver high-quality results.</p>
+                 <ul class="list-disc list-inside text-medium-grey-text">
+                    <li>Residential Construction</li>
+                    <li>Commercial Construction</li>
+                    <li>Industrial Construction</li>
+                    <li>Interior Fit-Outs</li>
+                    <li>Specialized Structures</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="staggered-item mb-8">
+             <div class="staggered-image md:w-1/2">
+                <img src="https://placehold.co/600x400/d1d5db/4b5563?text=Renovations" alt="Renovations and Restorations" class="w-full h-full object-cover" loading="lazy">
+            </div>
+            <div class="staggered-content md:w-1/2 p-6">
+                <h3 class="text-2xl font-semibold text-primary-blue mb-4">Renovations & Restorations</h3>
+                <p class="text-medium-grey-text mb-4">Breathing new life into existing structures requires a delicate touch and expert knowledge. We provide comprehensive renovation and restoration services, preserving historical integrity while incorporating modern functionality and aesthetics.</p>
+                <ul class="list-disc list-inside text-medium-grey-text">
+                    <li>Historical Restoration</li>
+                    <li>Major Renovations</li>
+                    <li>Structural Repairs</li>
+                    <li>Adaptive Reuse</li>
+                    <li>Modernization</li>
+                </ul>
+            </div>
+        </div>
+
+         <div class="text-center mt-12">
+            <a href="#" data-section="contact" class="site-nav bg-primary-blue hover:bg-accent-orange text-white font-bold py-3 px-8 rounded-full transition duration-300 inline-block">Start Your Project Discussion</a>
+        </div>
+    </div>
+</section>
+
+<section id="projects" class="page-section py-16 bg-light-grey-bg">
+  <div class="container mx-auto px-6">
+    <h2 class="text-3xl font-bold text-center text-primary-blue mb-12">Our Recent Projects</h2>
+            <div class="staggered-item mb-8">
+      <div class="staggered-image md:w-1/2">
+        <img src="https://placehold.co/600x400/d1d5db/4b5563?text=Luxury+Residence" alt="Luxury Residence" class="w-full h-full object-cover" loading="lazy">
+      </div>
+      <div class="staggered-content md:w-1/2 p-6">
+        <h3 class="text-2xl font-semibold text-primary-blue mb-2">Luxury Residence</h3>
+        <p class="text-medium-grey-text">Construction of a modern luxury home in the countryside, featuring sustainable materials and energy-efficient design. This project showcases our ability to blend contemporary design with environmental considerations.</p>
+      </div>
+    </div>
+        <div class="staggered-item mb-8">
+      <div class="staggered-image md:w-1/2">
+        <img src="https://placehold.co/600x400/d1d5db/4b5563?text=Office+Renovation" alt="Office Renovation" class="w-full h-full object-cover" loading="lazy">
+      </div>
+      <div class="staggered-content md:w-1/2 p-6">
+        <h3 class="text-2xl font-semibold text-primary-blue mb-2">Office Building Renovation</h3>
+        <p class="text-medium-grey-text">Complete renovation of a downtown office building, transforming outdated spaces into a modern and collaborative work environment. We focused on maximizing natural light and creating flexible workspaces.</p>
+      </div>
+    </div>
+        <div class="staggered-item mb-8">
+      <div class="staggered-image md:w-1/2">
+        <img src="https://placehold.co/600x400/d1d5db/4b5563?text=Industrial+Warehouse" alt="Industrial Warehouse" class="w-full h-full object-cover" loading="lazy">
+      </div>
+      <div class="staggered-content md:w-1/2 p-6">
+        <h3 class="text-2xl font-semibold text-primary-blue mb-2">Industrial Warehouse</h3>
+        <p class="text-medium-grey-text">Construction of a large-scale industrial warehouse facility, designed for optimal logistics and storage efficiency. The project included advanced racking systems and loading dock solutions.</p>
+      </div>
+    </div>
+        <div class="staggered-item mb-8">
+      <div class="staggered-image md:w-1/2">
+        <img src="https://placehold.co/600x400/d1d5db/4b5563?text=Retail+Fit-Out" alt="Retail Fit-Out" class="w-full h-full object-cover" loading="lazy">
+      </div>
+      <div class="staggered-content md:w-1/2 p-6">
+        <h3 class="text-2xl font-semibold text-primary-blue mb-2">Retail Space Fit-Out</h3>
+        <p class="text-medium-grey-text">Interior fit-out of a new retail space, creating an inviting and functional environment for customers and staff. Custom millwork and lighting design were key features.</p>
+      </div>
+    </div>
+        <div class="staggered-item mb-8">
+      <div class="staggered-image md:w-1/2">
+        <img src="https://placehold.co/600x400/d1d5db/4b5563?text=School+Expansion" alt="Educational Facility Expansion" class="w-full h-full object-cover" loading="lazy">
+      </div>
+      <div class="staggered-content md:w-1/2 p-6">
+        <h3 class="text-2xl font-semibold text-primary-blue mb-2">Educational Facility Expansion</h3>
+        <p class="text-medium-grey-text">Adding new classrooms and facilities to an existing school building to accommodate growth. The project included modern learning spaces and accessibility upgrades.</p>
+      </div>
+    </div>
+        <div class="staggered-item mb-8">
+      <div class="staggered-image md:w-1/2">
+        <img src="https://placehold.co/600x400/d1d5db/4b5563?text=Healthcare+Clinic" alt="Healthcare Clinic Construction" class="w-full h-full object-cover" loading="lazy">
+      </div>
+      <div class="staggered-content md:w-1/2 p-6">
+        <h3 class="text-2xl font-semibold text-primary-blue mb-2">Healthcare Clinic Construction</h3>
+        <p class="text-medium-grey-text">Building a new healthcare clinic with specialized rooms and facilities for patient care. The design prioritized patient comfort and efficient workflow for medical staff.</p>
+      </div>
+    </div>
+    <div class="text-center mt-12">
+      <a href="#" data-section="projects" class="site-nav bg-primary-blue hover:bg-accent-orange text-white font-bold py-3 px-8 rounded-full transition duration-300 inline-block">View More Projects</a>
+    </div>
+  </div>
+</section>
+
+<section id="testimonials" class="page-section py-16 bg-medium-grey-bg">
+    <div class="container mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-primary-blue mb-12">What Our Clients Say</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="testimonial-card">
+                <p class="text-medium-grey-text mb-4">"BuildCo exceeded our expectations on our home renovation. Their team was professional, skilled, and completed the project on time and within budget. We love our new space!"</p>
+                <p class="font-semibold text-dark-grey-text">- Jane Doe, Homeowner</p>
+            </div>
+            <div class="testimonial-card">
+                <p class="text-medium-grey-text mb-4">"We hired BuildCo for our new office building construction, and they delivered a fantastic result. The quality of work is exceptional, and their communication throughout the project was excellent."</p>
+                <p class="font-semibold text-dark-grey-text">- John Smith, Business Owner</p>
+            </div>
+            <div class="testimonial-card">
+                <p class="text-medium-grey-text mb-4">"The BuildCo team handled our industrial facility expansion with great expertise. They managed the complex requirements efficiently and delivered a safe and functional building."</p>
+                <p class="font-semibold text-dark-grey-text">- Sarah Lee, Operations Manager</p>
+            </div>
+             <div class="testimonial-card">
+                <p class="text-medium-grey-text mb-4">"Working with BuildCo on our retail fit-out was a smooth process. They understood our vision and created a space that perfectly reflects our brand."</p>
+                <p class="font-semibold text-dark-grey-text">- Mike Johnson, Retail Manager</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="blogs" class="page-section py-16 bg-light-grey-bg">
+    <div class="container mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-primary-blue mb-12">Latest from Our Blog</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                 <img src="https://placehold.co/600x300/d1d5db/4b5563?text=Blog+Image+1" alt="Blog Image 1" class="w-full h-48 object-cover" loading="lazy">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-primary-blue mb-2">5 Tips for a Successful Home Renovation</h3>
+                    <p class="text-medium-grey-text text-sm mb-4">Published on October 26, 2023</p>
+                    <p class="text-medium-grey-text mb-4">Thinking about renovating your home? Read our top 5 tips to ensure a smooth and successful project...</p>
+                    <a href="#" class="text-primary-blue hover:underline font-semibold">Read More →</a>
+                </div>
+            </div>
+             <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                 <img src="https://placehold.co/600x300/d1d5db/4b5563?text=Blog+Image+2" alt="Blog Image 2" class="w-full h-48 object-cover" loading="lazy">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-primary-blue mb-2">Understanding Commercial Construction Phases</h3>
+                    <p class="text-medium-grey-text text-sm mb-4">Published on October 20, 2023</p>
+                    <p class="text-medium-grey-text mb-4">A brief overview of the key stages involved in a typical commercial construction project...</p>
+                    <a href="#" class="text-primary-blue hover:underline font-semibold">Read More →</a>
+                </div>
+            </div>
+        </div>
+         <div class="text-center mt-12">
+            <a href="#" class="bg-primary-blue hover:bg-accent-orange text-white font-bold py-3 px-8 rounded-full transition duration-300 inline-block">View All Blog Posts</a>
+        </div>
+    </div>
+</section>
+
+<section id="faqs" class="page-section py-16 bg-white">
+    <div class="container mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-primary-blue mb-12">Frequently Asked Questions</h2>
+        <div class="max-w-3xl mx-auto">
+            <div class="faq-item">
+                <div class="faq-question">
+                    What types of projects does BuildCo handle?
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <div class="faq-answer">
+                    <p class="text-medium-grey-text">We handle a wide range of construction projects, including residential new builds, renovations, commercial buildings, industrial facilities, and specialized fit-outs. Visit our Services page for more details.</p>
+                </div>
+            </div>
+             <div class="faq-item">
+                <div class="faq-question">
+                    How long does a typical construction project take?
+                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <div class="faq-answer">
+                    <p class="text-medium-grey-text">Project timelines vary greatly depending on the scope, size, and complexity of the work. We provide a detailed project schedule during the planning phase.</p>
+                </div>
+            </div>
+             <div class="faq-item">
+                <div class="faq-question">
+                    Can I get a free quote?
+                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <div class="faq-answer">
+                    <p class="text-medium-grey-text">Yes, we offer free consultations and quotes for potential projects. Please contact us to schedule a meeting.</p>
+                </div>
+            </div>
+             <div class="faq-item">
+                <div class="faq-question">
+                    Is BuildCo licensed and insured?
+                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <div class="faq-answer">
+                    <p class="text-medium-grey-text">Yes, BuildCo is fully licensed, bonded, and insured, giving you peace of mind throughout your construction project.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contact" class="page-section py-16 bg-medium-grey-bg">
+    <div class="container mx-auto px-6">
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-primary-blue mb-12">Get in Touch</h2>
+        <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-lg p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h3 class="text-2xl font-semibold text-primary-blue mb-4">Send us a Message</h3>
+                <form id="contact-form">
+                    <div class="mb-4">
+                        <label for="name" class="block text-dark-grey-text font-bold mb-2">Name</label>
+                        <input type="text" id="name" name="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-dark-grey-text leading-tight focus:outline-none focus:ring-primary-blue focus:border-primary-blue" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="block text-dark-grey-text font-bold mb-2">Email</label>
+                        <input type="email" id="email" name="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-dark-grey-text leading-tight focus:outline-none focus:ring-primary-blue focus:border-primary-blue" required>
+                    </div>
+                     <div class="mb-4">
+                        <label for="subject" class="block text-dark-grey-text font-bold mb-2">Subject</label>
+                        <input type="text" id="subject" name="subject" class="shadow appearance-none border rounded w-full py-2 px-3 text-dark-grey-text leading-tight focus:outline-none focus:ring-primary-blue focus:border-primary-blue">
+                    </div>
+                    <div class="mb-4">
+                        <label for="message" class="block text-dark-grey-text font-bold mb-2">Message</label>
+                        <textarea id="message" name="message" rows="6" class="shadow appearance-none border rounded w-full py-2 px-3 text-dark-grey-text leading-tight focus:outline-none focus:ring-primary-blue focus:border-primary-blue" required></textarea>
+                    </div>
+                    <div class="flex items-center justify-center md:justify-start">
+                        <button type="submit" class="bg-primary-blue hover:bg-accent-orange text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+                            Send Message
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div>
+                <h3 class="text-2xl font-semibold text-primary-blue mb-4">Our Location & Contact Info</h3>
+                <div class="rounded-lg overflow-hidden shadow-lg mb-6">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2483.6999092125526!2d-0.12775835002983563!3d51.5007848795872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d8a00baf21de75%3A0x52963a5addd52a99!2sBig+Ben!5e0!3m2!1sen!2suk!4v1646832260021!5m2!1sen!2suk"
+                        width="100%"
+                        height="350"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+                <p class="text-medium-grey-text mb-2"><span class="font-semibold">Address:</span> 123 Construction Lane, Building City, BC 12345</p>
+                <p class="text-medium-grey-text mb-2"><span class="font-semibold">Phone:</span> (123) 456-7890</p>
+                <p class="text-medium-grey-text mb-2"><span class="font-semibold">Email:</span> info@buildco.com</p>
+                 <p class="text-medium-grey-text mt-4">Feel free to reach out to us through the form or visit us at our office location shown on the map. We look forward to hearing from you!</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="bg-primary-blue text-white text-center py-8">
+    <div class="container mx-auto px-6">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+            <div class="mb-4 md:mb-0">
+                <h3 class="text-xl font-bold mb-2">BuildCo</h3>
+                <p class="text-light-grey-text">Building strong foundations for a better tomorrow.</p>
+            </div>
+            <div class="flex flex-wrap justify-center space-x-4 md:space-x-6">
+                 <a href="#" data-section="home" class="site-nav text-light-grey-text hover:text-white transition duration-300">Home</a>
+                <a href="#" data-section="about" class="site-nav text-light-grey-text hover:text-white transition duration-300">About</a>
+                <a href="#" data-section="services" class="site-nav text-light-grey-text hover:text-white transition duration-300">Services</a>
+                <a href="#" data-section="projects" class="site-nav text-light-grey-text hover:text-white transition duration-300">Projects</a>
+                 <a href="#" data-section="blogs" class="site-nav text-light-grey-text hover:text-white transition duration-300">Blogs</a>
+                  <a href="#" data-section="faqs" class="site-nav text-light-grey-text hover:text-white transition duration-300">FAQs</a>
+                <a href="#" data-section="contact" class="site-nav text-light-grey-text hover:text-white transition duration-300">Contact</a>
+                 <a href="#" data-section="testimonials" class="site-nav text-light-grey-text hover:text-white transition duration-300">Testimonials</a>
+            </div>
+        </div>
+        <p class="text-light-grey-text text-sm">© 2023 BuildCo. All rights reserved.</p>
+    </div>
+</footer>
+
+<div id="message-box" class="hidden"></div>
+
+
+<script>
+    // JavaScript for multi-page simulation (show/hide sections)
+    const sections = document.querySelectorAll('.page-section');
+    const navLinks = document.querySelectorAll('.site-nav');
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const messageBox = document.getElementById('message-box');
+
+
+    // Function to show a specific section and hide others
+    function showSection(id) {
+        sections.forEach(section => {
+            if (section.id === id) {
+                 section.classList.add('active'); // Add active class for fade-in
+            } else {
+                 section.classList.remove('active'); // Remove active class
+            }
+        });
+         // Scroll to the top of the page when changing sections
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Add click event listeners to navigation links
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+            const sectionId = this.getAttribute('data-section');
+            showSection(sectionId);
+            // Close mobile menu after clicking a link
+            mobileMenu.classList.add('hidden');
+        });
+    });
+
+    // Show the home section by default on page load
+    showSection('home');
+
+
+    // JavaScript for mobile menu toggle
+    mobileMenuButton.addEventListener('click', function() {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    // Close mobile menu when clicking outside (optional enhancement)
+    document.addEventListener('click', function(event) {
+        const isClickInsideMobileMenu = mobileMenu.contains(event.target);
+        const isClickOnMobileMenuButton = mobileMenuButton.contains(event.target);
+        if (!isClickInsideMobileMenu && !isClickOnMobileMenuButton && !mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+        }
+    });
+
+
+    // JavaScript for Image Carousel
+    const carouselImages = document.querySelectorAll('.carousel-image');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const carouselIndicatorsContainer = document.getElementById('carousel-indicators');
+    let currentImageIndex = 0;
+
+    // Create carousel indicators
+    carouselImages.forEach((_, index) => {
+        const indicator = document.createElement('div');
+        indicator.classList.add('carousel-indicator');
+        if (index === 0) {
+            indicator.classList.add('active');
+        }
+        indicator.addEventListener('click', () => {
+            currentImageIndex = index;
+            showImage(currentImageIndex);
+        });
+        carouselIndicatorsContainer.appendChild(indicator);
+    });
+
+    const carouselIndicators = document.querySelectorAll('.carousel-indicator');
+
+    // Function to show a specific carousel image and update indicators
+    function showImage(index) {
+        // Remove active class from all images and indicators
+        carouselImages.forEach(img => img.classList.remove('active'));
+        carouselIndicators.forEach(indicator => indicator.classList.remove('active'));
+
+        // Add active class to the current image and indicator
+        if (carouselImages[index]) {
+            carouselImages[index].classList.add('active');
+        }
+        if (carouselIndicators[index]) {
+             carouselIndicators[index].classList.add('active');
+        }
+    }
+
+    // Event listeners for carousel controls
+    prevBtn.addEventListener('click', function() {
+        currentImageIndex--;
+        if (currentImageIndex < 0) {
+            currentImageIndex = carouselImages.length - 1;
+        }
+        showImage(currentImageIndex);
+    });
+
+    nextBtn.addEventListener('click', function() {
+        currentImageIndex++;
+        if (currentImageIndex >= carouselImages.length) {
+            currentImageIndex = 0;
+        }
+        showImage(currentImageIndex);
+    });
+
+    // Auto-play the carousel
+    let carouselInterval = setInterval(() => {
+        currentImageIndex++;
+        if (currentImageIndex >= carouselImages.length) {
+            currentImageIndex = 0;
+        }
+        showImage(currentImageIndex);
+    }, 5000); // Change image every 5 seconds
+
+    // Pause auto-play on hover (optional)
+    const heroSection = document.getElementById('home').querySelector('.relative.h-screen.overflow-hidden'); // Get the carousel container specifically
+    heroSection.addEventListener('mouseenter', () => {
+        clearInterval(carouselInterval);
+    });
+    heroSection.addEventListener('mouseleave', () => {
+         carouselInterval = setInterval(() => {
+            currentImageIndex++;
+            if (currentImageIndex >= carouselImages.length) {
+                currentImageIndex = 0;
+            }
+            showImage(currentImageIndex);
+        }, 5000);
+    });
+
+
+    // Simple message box function (replaces alert)
+    function showMessage(messageText) {
+        messageBox.textContent = messageText;
+        messageBox.classList.remove('hidden'); // Show the message box
+        messageBox.style.display = 'block'; // Ensure it's displayed
+
+        // Hide the message box after a few seconds
+        setTimeout(() => {
+            messageBox.classList.add('hidden'); // Hide the message box
+             messageBox.style.display = 'none'; // Ensure it's hidden
+        }, 3000); // Show for 3 seconds
+    }
+
+    // Basic form submission (prevents default for demonstration)
+    const contactForm = document.getElementById('contact-form');
+    contactForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        // In a real website, you would send the form data to a server here.
+        showMessage('Thank you for your message! We will get back to you shortly.');
+        contactForm.reset(); // Reset the form after submission
+    });
+
+    // JavaScript for Homepage Tabs
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    // Function to show a specific tab content
+    function showTab(tabId) {
+        tabButtons.forEach(button => {
+            if (button.getAttribute('data-tab') === tabId) {
+                button.classList.add('active');
+            } else {
+                button.classList.remove('active');
+            }
+        });
+
+        tabContents.forEach(content => {
+            if (content.id === tabId + '-content') { // Assumes content id is tabId + '-content'
+                content.classList.add('active');
+            } else {
+                content.classList.remove('active');
+            }
+        });
+    }
+
+    // Add click event listeners to tab buttons
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const tabId = this.getAttribute('data-tab');
+            showTab(tabId);
+        });
+    });
+
+    // Show the first tab content by default on page load
+    if (tabButtons.length > 0) {
+        showTab(tabButtons[0].getAttribute('data-tab'));
+    }
+
+    // JavaScript for FAQ Accordion (Optional)
+    const faqQuestions = document.querySelectorAll('.faq-question');
+
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', () => {
+            const answer = question.nextElementSibling; // Get the next sibling (the answer div)
+            const isActive = question.classList.contains('active');
+
+            // Close all other open answers
+            faqQuestions.forEach(q => {
+                if (q !== question && q.classList.contains('active')) {
+                    q.classList.remove('active');
+                    q.nextElementSibling.style.display = 'none';
+                }
+            });
+
+            // Toggle the clicked question's answer
+            if (isActive) {
+                question.classList.remove('active');
+                answer.style.display = 'none';
+            } else {
+                question.classList.add('active');
+                answer.style.display = 'block'; // Or 'grid', 'flex', etc. depending on content
+            }
+        });
+    });
+
+</script>
+
+</body>
+</html>
